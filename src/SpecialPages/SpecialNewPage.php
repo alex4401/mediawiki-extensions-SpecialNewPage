@@ -2,11 +2,26 @@
 namespace MediaWiki\Extension\NewPage\SpecialPages;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\SpecialPage\SpecialPageFactory;
 use MediaWiki\Title\Title;
+use OOUI\HtmlSnippet;
+use OOUI\PanelLayout;
 
 final class SpecialNewPage extends SpecialNewPageBase {
-	public function __construct() {
+	private SpecialPageFactory $specialPageFactory;
+	private LinkRenderer $linkRenderer;
+	private bool $hasSearchDigest;
+
+	public function __construct(
+		ExtensionRegistry $extensionRegistry,
+		SpecialPageFactory $specialPageFactory,
+		LinkRenderer $linkRenderer,
+	) {
+		$this->hasSearchDigest = $extensionRegistry->isLoaded( 'SearchDigest' );
+		$this->specialPageFactory = $specialPageFactory;
+		$this->linkRenderer = $linkRenderer;
 		parent::__construct( 'NewPage', 'edit' );
 	}
 
@@ -14,34 +29,70 @@ final class SpecialNewPage extends SpecialNewPageBase {
 		return 'ext.newpage';
 	}
 
+	private function getQuerypageSection(
+		string $specialPageName,
+		string $titleMsg,
+		string $bodyMsg,
+		int $limit,
+	): string {
+		$specialPage = $this->specialPageFactory->getPage( $specialPageName );
+		$result = $specialPage->doQuery( 0, $limit );
+		$links = [];
+		foreach ( $result as $row ) {
+			$title = Title::makeTitle( $row->namespace, $row->title );
+			$links[] = Html::rawElement(
+				'li',
+				[],
+				$this->linkRenderer->makeLink( $title )
+			);
+		}
+		if ( empty( $links ) ) {
+			return '';
+		}
+		return Html::element( 'h3', [], $this->msg( $titleMsg )->text() ) .
+			Html::rawElement( 'p', [], $this->msg( $bodyMsg )->parse() ) .
+			Html::rawElement( 'ol', [], implode( $links ) );
+	}
+
 	/**
-	 * @return \OOUI\PanelLayout[]
+	 * @return PanelLayout[]
 	 */
 	protected function getHelpRailModules(): array {
-		$hasSearchDigest = ExtensionRegistry::getInstance()->isLoaded( 'SearchDigest' );
-
+		$limit = $this->getConfig()->get( 'NewPageListLimit' );
+		$wantedPagesSection = $this->getQuerypageSection(
+			'Wantedpages',
+			'wantedpages',
+			'extnewpage-help-contributetext',
+			$limit,
+		);
+		$searchDigestSection = $this->hasSearchDigest ? $this->getQuerypageSection(
+			'SearchDigest',
+			'searchdigest',
+			'extnewpage-help-contributetext-searchdigest',
+			$limit,
+		) : false;
 		return [
-			new \OOUI\PanelLayout( [
+			new PanelLayout( [
 				'classes' => [ 'extnewpage-rail-module' ],
 				'expanded' => false,
 				'padded' => false,
 				'framed' => false,
-				'content' => new \OOUI\HtmlSnippet( 
-				   	Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-nsheading' )->parse() )
+				'content' => new HtmlSnippet( implode( ' ', [
+					Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-contributeheading' ) ),
+					$wantedPagesSection,
+					$searchDigestSection,
+				] ) ),
+			] ),
+			new PanelLayout( [
+				'classes' => [ 'extnewpage-rail-module' ],
+				'expanded' => false,
+				'padded' => false,
+				'framed' => false,
+				'content' => new HtmlSnippet(
+					Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-nsheading' ) )
 					. Html::rawElement( 'p', [], $this->msg( 'extnewpage-help-nstext' )->parse() )
 				),
 			] ) ,
-			new \OOUI\PanelLayout( [
-				'classes' => [ 'extnewpage-rail-module' ],
-				'expanded' => false,
-				'padded' => false,
-				'framed' => false,
-				'content' => new \OOUI\HtmlSnippet( implode( ' ', [
-					Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-contributeheading' )->parse() ),
-					$this->msg( 'extnewpage-help-contributetext' )->parse(),
-					$hasSearchDigest ? $this->msg( 'extnewpage-help-contributetext-searchdigest' )->parse() : false,
-				] ) ),
-			] ),
 		];
 	}
 
