@@ -1,27 +1,25 @@
 <?php
 namespace MediaWiki\Extension\NewPage\SpecialPages;
 
+use InvalidArgumentException;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\SpecialPage\QueryPage;
 use MediaWiki\SpecialPage\SpecialPageFactory;
 use MediaWiki\Title\Title;
 use OOUI\HtmlSnippet;
 use OOUI\PanelLayout;
 
 final class SpecialNewPage extends SpecialNewPageBase {
-	private SpecialPageFactory $specialPageFactory;
-	private LinkRenderer $linkRenderer;
-	private bool $hasSearchDigest;
+	private readonly bool $hasSearchDigest;
 
 	public function __construct(
 		ExtensionRegistry $extensionRegistry,
-		SpecialPageFactory $specialPageFactory,
-		LinkRenderer $linkRenderer,
+		private readonly SpecialPageFactory $specialPageFactory,
+		private readonly LinkRenderer $linkRenderer
 	) {
 		$this->hasSearchDigest = $extensionRegistry->isLoaded( 'SearchDigest' );
-		$this->specialPageFactory = $specialPageFactory;
-		$this->linkRenderer = $linkRenderer;
 		parent::__construct( 'NewPage', 'edit' );
 	}
 
@@ -29,7 +27,7 @@ final class SpecialNewPage extends SpecialNewPageBase {
 		return 'ext.newpage';
 	}
 
-	private function getQuerypageSection(
+	private function getQueryPageSection(
 		string $specialPageName,
 		string $titleMsg,
 		string $bodyMsg,
@@ -59,13 +57,13 @@ final class SpecialNewPage extends SpecialNewPageBase {
 	 */
 	protected function getHelpRailModules(): array {
 		$limit = $this->getConfig()->get( 'NewPageListLimit' );
-		$wantedPagesSection = $this->getQuerypageSection(
+		$wantedPagesSection = $this->getQueryPageSection(
 			'Wantedpages',
 			'wantedpages',
 			'extnewpage-help-contributetext',
 			$limit,
 		);
-		$searchDigestSection = $this->hasSearchDigest ? $this->getQuerypageSection(
+		$searchDigestSection = $this->hasSearchDigest ? $this->getQueryPageSection(
 			'SearchDigest',
 			'searchdigest',
 			'extnewpage-help-contributetext-searchdigest',
