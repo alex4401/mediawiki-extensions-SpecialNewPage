@@ -34,6 +34,11 @@ final class SpecialNewPage extends SpecialNewPageBase {
 		int $limit,
 	): string {
 		$specialPage = $this->specialPageFactory->getPage( $specialPageName );
+		if ( !( $specialPage instanceof QueryPage ) ) {
+			throw new InvalidArgumentException(
+				"Cannot render a QueryPage section for a non-QueryPage special page: $specialPageName" );
+		}
+
 		$result = $specialPage->doQuery( 0, $limit );
 		$links = [];
 		foreach ( $result as $row ) {
