@@ -73,7 +73,7 @@ final class SpecialNewPage extends SpecialNewPageBase {
 			'searchdigest',
 			'extnewpage-help-contributetext-searchdigest',
 			$limit,
-		) : false;
+		) : '';
 		return [
 			new PanelLayout( [
 				'classes' => [ 'extnewpage-rail-module' ],
