@@ -19,8 +19,8 @@ final class SpecialNewPage extends SpecialNewPageBase {
 		private readonly SpecialPageFactory $specialPageFactory,
 		private readonly LinkRenderer $linkRenderer
 	) {
-		$this->hasSearchDigest = $extensionRegistry->isLoaded( 'SearchDigest' );
 		parent::__construct( 'NewPage', 'edit' );
+		$this->hasSearchDigest = $extensionRegistry->isLoaded( 'SearchDigest' );
 	}
 
 	protected function getJsModuleName(): string {
@@ -57,46 +57,65 @@ final class SpecialNewPage extends SpecialNewPageBase {
 			Html::rawElement( 'ol', [], implode( $links ) );
 	}
 
+	private function getQueryPageRailModules(): array {
+		$config = $this->getConfig();
+		$limit = $config->get( 'NewPageListLimit' );
+
+		$results = [];
+
+		if ( $config->get( 'NewPageEnableWantedPagesModule' ) ) {
+			$results[] = $this->getQueryPageSection(
+				'Wantedpages',
+				'wantedpages',
+				'extnewpage-help-contributetext',
+				$limit,
+			);
+		}
+
+		if ( $this->hasSearchDigest && $config->get( 'NewPageEnableSearchDigestModule' ) ) {
+			$results[] = $this->getQueryPageSection(
+				'SearchDigest',
+				'searchdigest',
+				'extnewpage-help-contributetext-searchdigest',
+				$limit,
+			);
+		}
+
+		return $results;
+	}
+
 	/**
 	 * @return PanelLayout[]
 	 */
 	protected function getHelpRailModules(): array {
-		$limit = $this->getConfig()->get( 'NewPageListLimit' );
-		$wantedPagesSection = $this->getQueryPageSection(
-			'Wantedpages',
-			'wantedpages',
-			'extnewpage-help-contributetext',
-			$limit,
-		);
-		$searchDigestSection = $this->hasSearchDigest ? $this->getQueryPageSection(
-			'SearchDigest',
-			'searchdigest',
-			'extnewpage-help-contributetext-searchdigest',
-			$limit,
-		) : '';
-		return [
-			new PanelLayout( [
+		$results = [];
+
+		$queryRailModules = $this->getQueryPageRailModules();
+		if ( !empty( $queryRailModules ) ) {
+			$results[] = new PanelLayout( [
 				'classes' => [ 'extnewpage-rail-module' ],
 				'expanded' => false,
 				'padded' => false,
 				'framed' => false,
 				'content' => new HtmlSnippet( implode( ' ', [
 					Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-contributeheading' ) ),
-					$wantedPagesSection,
-					$searchDigestSection,
+					...$queryRailModules,
 				] ) ),
-			] ),
-			new PanelLayout( [
-				'classes' => [ 'extnewpage-rail-module' ],
-				'expanded' => false,
-				'padded' => false,
-				'framed' => false,
-				'content' => new HtmlSnippet(
-					Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-nsheading' ) )
-					. Html::rawElement( 'p', [], $this->msg( 'extnewpage-help-nstext' )->parse() )
-				),
-			] ) ,
-		];
+			] );
+		}
+
+		$results[] = new PanelLayout( [
+			'classes' => [ 'extnewpage-rail-module' ],
+			'expanded' => false,
+			'padded' => false,
+			'framed' => false,
+			'content' => new HtmlSnippet(
+				Html::rawElement( 'h2', [], $this->msg( 'extnewpage-help-nsheading' ) )
+				. Html::rawElement( 'p', [], $this->msg( 'extnewpage-help-nstext' )->parse() )
+			),
+		] );
+
+		return $results;
 	}
 
 	protected function getFormFields() {

@@ -76,6 +76,12 @@
 			"value": 10,
 			"description": "How many pages are displayed in wanted pages/search digest lists",
 			"public": true
+		},
+		"EnableWantedPagesModule": {
+			"value": true
+		},
+		"EnableSearchDigestModule": {
+			"value": true
 		}
 	},
 	"manifest_version": 2
