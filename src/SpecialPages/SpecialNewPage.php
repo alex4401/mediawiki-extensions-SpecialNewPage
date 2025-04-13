@@ -72,15 +72,6 @@ final class SpecialNewPage extends SpecialNewPageBase {
 			);
 		}
 
-		if ( $this->hasSearchDigest && $config->get( 'NewPageEnableSearchDigestModule' ) ) {
-			$results[] = $this->getQueryPageSection(
-				'SearchDigest',
-				'searchdigest',
-				'extnewpage-help-contributetext-searchdigest',
-				$limit,
-			);
-		}
-
 		return $results;
 	}
 

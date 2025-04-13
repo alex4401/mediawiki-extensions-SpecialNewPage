@@ -79,9 +79,6 @@
 		},
 		"EnableWantedPagesModule": {
 			"value": true
-		},
-		"EnableSearchDigestModule": {
-			"value": true
 		}
 	},
 	"manifest_version": 2
