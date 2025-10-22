@@ -1,0 +1,33 @@
+{
+    "@metadata": {
+        "authors": [
+            "Kahene"
+        ]
+    },
+    "extnewpage-desc": "Ajoute [[Special:NewPage]] comme un moyen plus facile pour les débutants et plus rapide de créer des pages.",
+    "extnewpage-toolbox-label": "Nouvelle page",
+    "extnewpage-field-title": "Entrez le titre souhaité:",
+    "extnewpage-redirect-toolbox-label": "Nouvelle redirection",
+    "extnewpage-field-redirect-from": "De:",
+    "extnewpage-field-redirect-to": "À:",
+    "accesskey-extnewpage": "]",
+    "extnewpage-help-nsheading": "Aidez-moi ! À quoi servent ces champs ?",
+    "extnewpage-help-nstext": "Les pages MediaWiki sont divisées en types en fonction de leurs \"espaces de noms\". Consultez [https://www.mediawiki.org/wiki/Help:Namespaces/fr Help:Espaces de noms] pour plus d'informations.",
+    "extnewpage-help-contributeheading": "Vous ne savez pas comment aider ?",
+    "extnewpage-help-contributetext": "Vous pouvez essayer de créer l'une des [[Special:WantedPages|Pages les plus demandées]] ou les [[Special:WantedCategories|Catégories les plus demandées]].",
+    "extnewpage-help-contributetext-searchdigest": "Vous pouvez aussi voir une [[Special:SearchDigest|liste des pages manquantes recherchées]] sur ce wiki.",
+    "extnewpage-newpagetext-fallback": "Vous êtes sur le point de créer une page 2$ intitulée<span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-0": "Vous êtes sur le point de créer un article intitulé <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-1": "Vous êtes sur le point de créer une page de discussion intitulée <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-2": "Vous êtes sur le point de créer une page utilisateur intitulée <span class=\"extnewpage-new\">$1</span>. Attendez ! Dans l'espace de noms utilisateur, vous souhaitez probablement créer une sous-page",
+    "extnewpage-newpagetext-3": "Vous êtes sur le point de créer une page de discussion utilisateur intitulée <span class=\"extnewpage-new\">$1</span>. Attendez ! Dans l'espace de noms utilisateur, vous souhaitez probablement créer une sous-page.",
+    "extnewpage-newpagetext-4": "Vous êtes sur le point de créer une page de projet intitulée <span class=\"extnewpage-new\">$1</span>. Les pages de projet contiennent des méta-données sur ce wiki.",
+    "extnewpage-newpagetext-5": "Vous êtes sur le point de créer une page de discussion de projet intitulée <span class=\"extnewpage-new\">$1</span>. Les pages de projet contiennent des méta-données sur ce wiki.",
+    "extnewpage-newpagetext-6": "Vous êtes sur le point de créer une page de description de fichier intitulée <span class=\"extnewpage-new\">$1</span>. Attendez ! Vous voudrez peut-être utiliser [[Special:Upload|Special:Téléverser à la place]].",
+    "extnewpage-newpagetext-8": "Vous êtes sur le point de créer une page d'interface MediaWiki intitulée <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-10": "Vous êtes sur le point de créer une page de modèle intitulée <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-12": "Vous êtes sur le point de créer une page d'aide intitulée <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-14": "Vous êtes sur le point de créer une catégorie intitulée <span class=\"extnewpage-new\">$1</span>.",
+    "extnewpage-newpagetext-828": "Vous êtes sur le point de créer un module intitulé <span class=\"extnewpage-new\">$1</span>. Vous pouvez écrire du code Lua ici.",
+    "extnewpage-newpagetext-2900": "Vous êtes sur le point de créer une carte interactive de code source intitulée <span class=\"extnewpage-new\">$1</span>. Les pages de carte sont utilisées avec l'extension DataMaps."
+}

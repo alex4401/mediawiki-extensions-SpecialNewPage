@@ -31,6 +31,13 @@ $specialPageAliases['es'] = [
 ];
 
 /**
+ * @author Kahene
+ */
+$specialPageAliases['fr'] = [
+    'NewPage' => [ 'Nouvelle page' ],
+];
+
+/**
  * @author Rainbow3ntity
  */
 $specialPageAliases['it'] = [
